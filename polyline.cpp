@@ -17,6 +17,7 @@
 ***************************************************************************/  
 
 #include <QLineF>
+#include <QPen>
 
 #include "node.h"
 #include "polyline.h"
@@ -24,14 +25,26 @@
 Kompton::PolyLine::PolyLine(const QPointF& start, const QPointF& end)
 	: QObject()
 {
-	QLineF line(start, end);
+	Kompton::Particle* line = new Kompton::Particle(start, end);
 	m_lineList << line;
+	connect(line, SIGNAL(particleClicked(Particle*)), this, SLOT(particleEmitClick(Particle*)));
 }
 
 Kompton::PolyLine::~PolyLine() {
 	m_lineList.clear();			//the exact function for the destructor?
+	m_nodeList.clear();
 }
 
-QLineF Kompton::PolyLine::getLine() {
+Kompton::Particle* Kompton::PolyLine::getLine() {
 	return m_lineList.first();
 }
+
+#include <kdebug.h>
+void Kompton::PolyLine::particleEmitClick(Particle* part) {
+	kDebug() << "Particle geklickt";			//Signal wird gesendet, am slot wird nicht ausgeführt
+// 	QPen pen = QPen();
+// 	pen.setColor(Qt::red);
+// 	part->setPen(pen);
+}
+
+#include "polyline.moc"

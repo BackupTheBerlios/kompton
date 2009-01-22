@@ -11,6 +11,7 @@ set(kompton_SRCS
 	diagramview.cpp
 	node.cpp
 	ownscene.cpp
+	particle.cpp
 	polyline.cpp
 )
 

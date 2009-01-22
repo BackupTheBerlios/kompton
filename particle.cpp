@@ -16,33 +16,54 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
-#ifndef KOMPTON_POLYLINE_H
-#define KOMPTON_POLYLINE_H
-
-#include <QObject>
-#include <QPointF>
-#include <QList>
+#include <QGraphicsLineItem>
+#include <QLineF>
+#include <QPen>
 
 #include "particle.h"
 
-class QLineF;
-class Node;
-
-namespace Kompton {
-	class PolyLine : public QObject {
-		Q_OBJECT
-		public:
-			PolyLine(const QPointF& start, const QPointF& end);
-			~PolyLine();
-			Particle* getLine();
-
-		private Q_SLOTS:
-			void particleEmitClick(Particle* particle);
-			
-		private:
-			QList<Node* > m_nodeList;
-			QList<Particle* > m_lineList;
-	};
+Kompton::Particle::Particle(const QPointF& start, const QPointF& end, QGraphicsItem* parent)
+	: QGraphicsItem(parent)
+	, m_line(new QGraphicsLineItem(QLineF(start, end),this))
+{
+	setAcceptHoverEvents(true);
+	QPen pen = QPen();
+	pen.setWidth(2);
+	pen.setColor(Qt::black);
+	m_line->setPen(pen);
 }
 
-#endif //KOMPTON_POLYLINE_H
+Kompton::Particle::~Particle() {
+	delete m_line;
+}
+
+void Kompton::Particle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+}
+
+QRectF Kompton::Particle::boundingRect() const {
+	return QRectF(m_line->boundingRect());
+}
+
+void Kompton::Particle::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+	emit particleClicked(this);
+}
+
+void Kompton::Particle::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+	QPen pen = QPen();
+	pen.setWidth(5);
+	pen.setColor(Qt::cyan);
+	m_line->setPen(pen);
+}
+
+void Kompton::Particle::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
+	QPen pen = QPen();
+	pen.setWidth(2);
+	pen.setColor(Qt::black);
+	m_line->setPen(pen);
+}
+
+void Kompton::Particle::setPen(const QPen& pen) {
+	m_line->setPen(pen);
+}
+
+#include "particle.moc"

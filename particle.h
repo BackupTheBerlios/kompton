@@ -16,33 +16,36 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
-#ifndef KOMPTON_POLYLINE_H
-#define KOMPTON_POLYLINE_H
+#ifndef KOMPTON_PARTICLE_H
+#define KOMPTON_PARTICLE_H
 
+#include <QGraphicsItem>
 #include <QObject>
-#include <QPointF>
-#include <QList>
+#include <QRectF>
 
-#include "particle.h"
-
-class QLineF;
-class Node;
+class QGraphicsLineItem;
 
 namespace Kompton {
-	class PolyLine : public QObject {
+	class Particle : public QObject, public QGraphicsItem {
 		Q_OBJECT
 		public:
-			PolyLine(const QPointF& start, const QPointF& end);
-			~PolyLine();
-			Particle* getLine();
+			Particle(const QPointF& start, const QPointF& end, QGraphicsItem* parent = 0);
+			~Particle();
 
-		private Q_SLOTS:
-			void particleEmitClick(Particle* particle);
-			
+			virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+			virtual QRectF boundingRect() const;
+			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+
+			void setPen(const QPen& pen);
+
+		Q_SIGNALS:
+			void particleClicked(Particle* particle);
+
 		private:
-			QList<Node* > m_nodeList;
-			QList<Particle* > m_lineList;
+			QGraphicsLineItem* m_line;
 	};
 }
 
-#endif //KOMPTON_POLYLINE_H
+#endif //KOMPTON_PARTICLE_H
