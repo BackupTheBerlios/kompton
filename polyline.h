@@ -16,48 +16,28 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
-#include <QPainter>
+#ifndef KOMPTON_POLYLINE_H
+#define KOMPTON_POLYLINE_H
 
-#include "node.h"
+#include <QObject>
+#include <QPointF>
+#include <QList>
 
-Kompton::Node::Node(QGraphicsItem* parent)
-	: QGraphicsItem(parent)
-	, m_ellipse(new QGraphicsEllipseItem(-10, -10, 20, 20, this))
-{
-	setAcceptHoverEvents(true);
-	QPen pen = QPen();
-	pen.setWidth(2);
-	pen.setColor(Qt::black);
-	m_ellipse->setPen(pen);
+class QLineF;
+
+class Node;
+
+namespace Kompton {
+	class PolyLine : public QObject {
+		public:
+			PolyLine(const QPointF& start, const QPointF& end);
+			~PolyLine();
+			QLineF getLine();
+
+		private:
+			QList<Node* > m_nodeList;
+			QList<QLineF > m_lineList;
+	};
 }
 
-Kompton::Node::~Node(){
-	delete m_ellipse;
-}
-
-void Kompton::Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-}
-
-QRectF Kompton::Node::boundingRect() const {
-	return QRectF(m_ellipse->boundingRect());
-}
-
-void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-	emit nodeClicked(QPointF(x(),y()));
-}
-
-void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
-	pen.setWidth(5);
-	pen.setColor(Qt::cyan);
-	m_ellipse->setPen(pen);
-}
-
-void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
-	pen.setWidth(2);
-	pen.setColor(Qt::black);
-	m_ellipse->setPen(pen);
-}
-
-#include "node.moc"
+#endif //KOMPTON_POLYLINE_H

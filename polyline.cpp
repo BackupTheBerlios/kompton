@@ -16,57 +16,22 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
+#include <QLineF>
 
-#include "ownscene.h"
 #include "node.h"
 #include "polyline.h"
 
-Kompton::OwnScene::OwnScene(QObject* parent)
-	: QGraphicsScene(parent)
-	, m_editLine(bool(false))
-	, m_startPos(QPoint(0,0))
-	, m_leftNodes(3)
-	, m_rightNodes(4)
+Kompton::PolyLine::PolyLine(const QPointF& start, const QPointF& end)
+	: QObject()
 {
-	setSceneRect(0, 0, 500, 500);
-	addRect(sceneRect());
-	//left Nodes
-	qreal xPos = sceneRect().left();
-	qreal yPos = sceneRect().top() + sceneRect().height() / (2*m_leftNodes);
-	for (int i = 0; i < m_leftNodes; ++i) {
-		Kompton::Node* node = new Kompton::Node;
-		node->setPos(xPos,yPos);
-		yPos += sceneRect().height() / m_leftNodes;
-		addItem(node);
-		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
-	}
-	//right nodes
-	xPos = sceneRect().right();
-	yPos = sceneRect().top() + sceneRect().height() / (2*m_rightNodes);
-	for (int i = 0; i < m_rightNodes; ++i) {
-		Kompton::Node* node = new Kompton::Node;
-		node->setPos(xPos,yPos);
-		yPos += sceneRect().height() / m_rightNodes;
-		addItem(node);
-		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
-	}
+	QLineF line(start, end);
+	m_lineList << line;
 }
 
-Kompton::OwnScene::~OwnScene() {
+Kompton::PolyLine::~PolyLine() {
+	m_lineList.clear();			//the exact function for the destructor?
 }
 
-void Kompton::OwnScene::nodeEmitClick(const QPointF pos) {
-	if (m_editLine == true) {
-		m_editLine = false;
-		Kompton::PolyLine line(m_startPos, pos);
-		addLine(line.getLine());
-	}
-	else {
-		m_editLine = true;
-		m_startPos = pos;
-	}
+QLineF Kompton::PolyLine::getLine() {
+	return m_lineList.first();
 }
-
-#include "ownscene.moc"

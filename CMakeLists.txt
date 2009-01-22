@@ -11,6 +11,7 @@ set(kompton_SRCS
 	diagramview.cpp
 	node.cpp
 	ownscene.cpp
+	polyline.cpp
 )
 
 kde4_add_executable(kompton ${kompton_SRCS})

@@ -23,8 +23,6 @@ Kompton::DiagramView::DiagramView(QWidget* parent)
 	, m_scene(new Kompton::OwnScene())
 {
 	this->setScene(m_scene);
-// 	m_scene->setBackgroundBrush(QBrush(Qt::cyan,Qt::Dense4Pattern));
-// 	setMouseTracking(true);
 }
 
 Kompton::DiagramView::~DiagramView() {
