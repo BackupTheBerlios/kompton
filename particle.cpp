@@ -23,25 +23,15 @@
 #include "particle.h"
 
 Kompton::Particle::Particle(const QPointF& start, const QPointF& end, QGraphicsItem* parent)
-	: QGraphicsItem(parent)
-	, m_line(new QGraphicsLineItem(QLineF(start, end),this))
+	: QGraphicsLineItem(QLineF(start, end), parent)
 {
 	setAcceptHoverEvents(true);
-	QPen pen = QPen();
+	QPen pen(Qt::black);
 	pen.setWidth(2);
-	pen.setColor(Qt::black);
-	m_line->setPen(pen);
+	setPen(pen);
 }
 
 Kompton::Particle::~Particle() {
-	delete m_line;
-}
-
-void Kompton::Particle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-}
-
-QRectF Kompton::Particle::boundingRect() const {
-	return QRectF(m_line->boundingRect());
 }
 
 void Kompton::Particle::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -49,29 +39,19 @@ void Kompton::Particle::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 void Kompton::Particle::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
+	QPen pen(Qt::cyan);
 	pen.setWidth(5);
-	pen.setColor(Qt::cyan);
-	m_line->setPen(pen);
+	setPen(pen);
 }
 
 void Kompton::Particle::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
+	QPen pen(Qt::black);
 	pen.setWidth(2);
-	pen.setColor(Qt::black);
-	m_line->setPen(pen);
-}
-
-void Kompton::Particle::setPen(const QPen& pen) {
-	m_line->setPen(pen);
+	setPen(pen);
 }
 
 void Kompton::Particle::newPos(const QPointF& start, const QPointF& end) {
-	m_line->setLine(QLineF(start,end));
-}
-
-QLineF Kompton::Particle::getLine() const {
-	return m_line->line();
+	setLine(QLineF(start,end));
 }
 
 #include "particle.moc"

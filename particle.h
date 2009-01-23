@@ -19,34 +19,25 @@
 #ifndef KOMPTON_PARTICLE_H
 #define KOMPTON_PARTICLE_H
 
-#include <QGraphicsItem>
+#include <QGraphicsLineItem>
 #include <QObject>
-#include <QRectF>
-
-class QGraphicsLineItem;
 
 namespace Kompton {
-	class Particle : public QObject, public QGraphicsItem {
+	class Particle : public QObject, public QGraphicsLineItem {
 		Q_OBJECT
 		public:
 			Particle(const QPointF& start, const QPointF& end, QGraphicsItem* parent = 0);
-			~Particle();
-
-			virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-			virtual QRectF boundingRect() const;
-			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+			virtual ~Particle();
 
 			void newPos(const QPointF& start, const QPointF& end);
-			void setPen(const QPen& pen);
-			QLineF getLine() const;
 			
 		Q_SIGNALS:
 			void particleClicked(Kompton::Particle* particle);
 
-		private:
-			QGraphicsLineItem* m_line;
+		protected:
+			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	};
 }
 

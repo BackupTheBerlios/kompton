@@ -56,7 +56,7 @@ void Kompton::PolyLine::particleEmitClick(Kompton::Particle* part) {
 	connect(node, SIGNAL(nodeClicked(QPointF)), scene(), SLOT(nodeEmitClick(QPointF)));
 	node->emitClick(centerPos);
 	//split the particles
-	QLineF line(part->getLine());
+	QLineF line(part->line());
 	part->newPos(line.p1(), centerPos);
 	Kompton::Particle* newParticle = new Kompton::Particle(centerPos, line.p2(), this);
 	m_lineList.insert(m_lineList.indexOf(part) + 1, newParticle);
