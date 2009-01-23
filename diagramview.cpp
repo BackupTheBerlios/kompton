@@ -22,7 +22,8 @@ Kompton::DiagramView::DiagramView(QWidget* parent)
 	: QGraphicsView(parent)
 	, m_scene(new Kompton::OwnScene())
 {
-	this->setScene(m_scene);
+	setScene(m_scene);
+	setRenderHint(QPainter::Antialiasing);
 }
 
 Kompton::DiagramView::~DiagramView() {
