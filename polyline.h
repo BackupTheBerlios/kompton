@@ -19,6 +19,7 @@
 #ifndef KOMPTON_POLYLINE_H
 #define KOMPTON_POLYLINE_H
 
+#include <QGraphicsItem>
 #include <QObject>
 #include <QPointF>
 #include <QList>
@@ -29,15 +30,17 @@ class QLineF;
 class Node;
 
 namespace Kompton {
-	class PolyLine : public QObject {
+	class PolyLine : public QObject, public QGraphicsItem {
 		Q_OBJECT
 		public:
 			PolyLine(const QPointF& start, const QPointF& end);
 			~PolyLine();
-			Particle* getLine();
+
+			virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+			virtual QRectF boundingRect() const;
 
 		private Q_SLOTS:
-			void particleEmitClick(Particle* particle);
+			void particleEmitClick(Kompton::Particle* particle);
 			
 		private:
 			QList<Node* > m_nodeList;

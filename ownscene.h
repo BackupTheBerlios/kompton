@@ -33,9 +33,6 @@ namespace Kompton {
 		private Q_SLOTS:
 			void nodeEmitClick(const QPointF pos);
 		
-		Q_SIGNALS:
-			void testEmit();
-		
 		private:
 			bool m_editLine;
 			QPointF m_startPos;

@@ -38,10 +38,12 @@ namespace Kompton {
 			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
+			void newPos(const QPointF& start, const QPointF& end);
 			void setPen(const QPen& pen);
-
+			QLineF getLine() const;
+			
 		Q_SIGNALS:
-			void particleClicked(Particle* particle);
+			void particleClicked(Kompton::Particle* particle);
 
 		private:
 			QGraphicsLineItem* m_line;

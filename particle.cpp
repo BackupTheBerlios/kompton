@@ -66,4 +66,12 @@ void Kompton::Particle::setPen(const QPen& pen) {
 	m_line->setPen(pen);
 }
 
+void Kompton::Particle::newPos(const QPointF& start, const QPointF& end) {
+	m_line->setLine(QLineF(start,end));
+}
+
+QLineF Kompton::Particle::getLine() const {
+	return m_line->line();
+}
+
 #include "particle.moc"

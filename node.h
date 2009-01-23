@@ -28,12 +28,13 @@ namespace Kompton {
 		public:
 			Node(QGraphicsItem* parent = 0);
 			~Node();
-		protected:
+
 			virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 			virtual QRectF boundingRect() const;
 			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
 			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+			void emitClick(const QPointF pos);
 		Q_SIGNALS:
 			void nodeClicked(const QPointF pos);
 

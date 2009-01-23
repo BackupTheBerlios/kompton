@@ -18,33 +18,49 @@
 
 #include <QLineF>
 #include <QPen>
+#include <QGraphicsScene>
 
 #include "node.h"
 #include "polyline.h"
 
 Kompton::PolyLine::PolyLine(const QPointF& start, const QPointF& end)
 	: QObject()
+	, QGraphicsItem()
 {
-	Kompton::Particle* line = new Kompton::Particle(start, end);
+	Kompton::Particle* line = new Kompton::Particle(start, end, this);
 	m_lineList << line;
-	connect(line, SIGNAL(particleClicked(Particle*)), this, SLOT(particleEmitClick(Particle*)));
+	connect(line, SIGNAL(particleClicked(Kompton::Particle*)), this, SLOT(particleEmitClick(Kompton::Particle*)));
 }
 
 Kompton::PolyLine::~PolyLine() {
-	m_lineList.clear();			//the exact function for the destructor?
-	m_nodeList.clear();
+	qDeleteAll(m_nodeList);
+	qDeleteAll(m_lineList);
 }
 
-Kompton::Particle* Kompton::PolyLine::getLine() {
-	return m_lineList.first();
+void Kompton::PolyLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+}
+
+QRectF Kompton::PolyLine::boundingRect() const {
+	return QRectF();
 }
 
 #include <kdebug.h>
-void Kompton::PolyLine::particleEmitClick(Particle* part) {
-	kDebug() << "Particle geklickt";			//Signal wird gesendet, am slot wird nicht ausgeführt
-// 	QPen pen = QPen();
-// 	pen.setColor(Qt::red);
-// 	part->setPen(pen);
+void Kompton::PolyLine::particleEmitClick(Kompton::Particle* part) {
+	//create node a correct position
+	Kompton::Node* node = new Kompton::Node(this);
+	QRectF rect = part->sceneBoundingRect();
+	QPointF centerPos = rect.center();
+	node->setPos(centerPos);
+	kDebug() << "Particle geklickt";
+	m_nodeList << node;
+	connect(node, SIGNAL(nodeClicked(QPointF)), scene(), SLOT(nodeEmitClick(QPointF)));
+	node->emitClick(centerPos);
+	//split the particles
+	QLineF line(part->getLine());
+	part->newPos(line.p1(), centerPos);
+	Kompton::Particle* newParticle = new Kompton::Particle(centerPos, line.p2(), this);
+	m_lineList.insert(m_lineList.indexOf(part) + 1, newParticle);
+	connect(newParticle, SIGNAL(particleClicked(Kompton::Particle*)), this, SLOT(particleEmitClick(Kompton::Particle*)));
 }
 
 #include "polyline.moc"

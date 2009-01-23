@@ -19,6 +19,7 @@
 #include <QPainter>
 
 #include "node.h"
+#include <kdebug.h>
 
 Kompton::Node::Node(QGraphicsItem* parent)
 	: QGraphicsItem(parent)
@@ -44,6 +45,10 @@ QRectF Kompton::Node::boundingRect() const {
 
 void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 	emit nodeClicked(QPointF(x(),y()));
+}
+
+void Kompton::Node::emitClick(const QPointF pos) {
+	emit nodeClicked(pos);
 }
 
 void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {

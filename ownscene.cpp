@@ -60,8 +60,8 @@ Kompton::OwnScene::~OwnScene() {
 void Kompton::OwnScene::nodeEmitClick(const QPointF pos) {
 	if (m_editLine == true) {
 		m_editLine = false;
-		Kompton::PolyLine line(m_startPos, pos);
-		addItem(line.getLine());
+		Kompton::PolyLine* line = new Kompton::PolyLine(m_startPos, pos);
+		addItem(line);
 	}
 	else {
 		m_editLine = true;
