@@ -77,18 +77,18 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 	for (qreal i = 0.0; i < steps; ++i) {
 		path.quadTo (
 		 startX + xStepDiff*i+xStepDiff/4 - amplitude * sin(arc),
-		 startY + yStepDiff*i+yStepDiff/4 + amplitude,
+		 startY + yStepDiff*i+yStepDiff/4 + amplitude * cos(arc),
 		 startX + xStepDiff*i+xStepDiff/2,
 		 startY + yStepDiff*i+yStepDiff/2
 		);
-		if (i < steps -1) {
+// 		if (i < steps -1) {
 			path.quadTo (
 			 startX + xStepDiff*i+xStepDiff*3/4 + amplitude * sin(arc),
-			 startY + yStepDiff*i+yStepDiff*3/4 - amplitude,
+			 startY + yStepDiff*i+yStepDiff*3/4 - amplitude * cos(arc),
 			 startX + xStepDiff*(i+1),
 			 startY + yStepDiff*(i+1)
 			);
-		}
+// 		}
 	}
 	//add Path for testing
 	addPath(path);
