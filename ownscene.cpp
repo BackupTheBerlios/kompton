@@ -67,9 +67,9 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 	//calculate characteristic values
 	qreal xDiff = end.x() - startX;
 	qreal yDiff = end.y() - startY;
-	qreal amplitude = 10.0;
-	qreal fineness = 25.0;
-	qreal steps = sqrt(xDiff*xDiff + yDiff*yDiff) / fineness;
+	qreal amplitude = 10.0; //"height" of the wave
+	qreal stepSize = 10.0; //smaler value means better fineness
+	qreal steps = sqrt(xDiff*xDiff + yDiff*yDiff) / stepSize;
 	qreal xStepDiff = xDiff / steps;
 	qreal yStepDiff = yDiff / steps;
 	qreal arc = atan(yDiff / xDiff);
