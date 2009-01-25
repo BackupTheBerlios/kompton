@@ -18,10 +18,14 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
+#include <QPainterPath>
+#include <math.h>
 
 #include "ownscene.h"
 #include "node.h"
 #include "polyline.h"
+
+#include <kdebug.h>
 
 Kompton::OwnScene::OwnScene(QObject* parent)
 	: QGraphicsScene(parent)
@@ -52,6 +56,42 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
 	}
+	//test phonen line style
+	QPointF start(100.0,200.0);
+	QPointF end(500.0,400.0);
+	//creat Path
+	QPainterPath path;
+	path.moveTo(start);
+	qreal startX = start.x();
+	qreal startY = start.y();
+	//calculate characteristic values
+	qreal xDiff = end.x() - startX;
+	qreal yDiff = end.y() - startY;
+	qreal amplitude = 10.0;
+	qreal fineness = 25.0;
+	qreal steps = sqrt(xDiff*xDiff + yDiff*yDiff) / fineness;
+	qreal xStepDiff = xDiff / steps;
+	qreal yStepDiff = yDiff / steps;
+	qreal arc = atan(yDiff / xDiff);
+	//draw the line
+	for (qreal i = 0.0; i < steps; ++i) {
+		path.quadTo (
+		 startX + xStepDiff*i+xStepDiff/4 - amplitude * sin(arc),
+		 startY + yStepDiff*i+yStepDiff/4 + amplitude,
+		 startX + xStepDiff*i+xStepDiff/2,
+		 startY + yStepDiff*i+yStepDiff/2
+		);
+		if (i < steps -1) {
+			path.quadTo (
+			 startX + xStepDiff*i+xStepDiff*3/4 + amplitude * sin(arc),
+			 startY + yStepDiff*i+yStepDiff*3/4 - amplitude,
+			 startX + xStepDiff*(i+1),
+			 startY + yStepDiff*(i+1)
+			);
+		}
+	}
+	//add Path for testing
+	addPath(path);
 }
 
 Kompton::OwnScene::~OwnScene() {
