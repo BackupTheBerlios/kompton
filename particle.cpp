@@ -100,7 +100,8 @@ void Kompton::Particle::rebuildRepresentation() {
 	//draw on the path according to the style
 	if (m_style == Kompton::PlainStyle) {
 		path.lineTo(m_line.p2());
-	} else if (m_style == Kompton::WigglyStyle) {
+	}
+	else if (m_style == Kompton::WigglyStyle) {
 		const QPointF start = m_line.p1();
 		const QPointF diff = m_line.p2() - start;
 		//some constants of the representation

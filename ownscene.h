@@ -21,21 +21,25 @@
 
 #include <QGraphicsScene>
 #include <QPoint>
-// #include <QObject>
 
 namespace Kompton {
+	class Node;
+	
 	class OwnScene : public QGraphicsScene {
 		Q_OBJECT
 		public:
 			OwnScene(QObject* parent = 0);
 			~OwnScene();
 
+		protected:
+			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+
 		private Q_SLOTS:
-			void nodeEmitClick(const QPointF pos);
+			void nodeEmitClick(Kompton::Node* node);
 		
 		private:
 			bool m_editLine;
-			QPointF m_startPos;
+			Node* m_startNode;
 			int m_leftNodes;
 			int m_rightNodes;
 	};

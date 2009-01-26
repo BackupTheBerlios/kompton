@@ -17,40 +17,32 @@
 ***************************************************************************/  
 
 #include "node.h"
+
+#include <QGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QPen>
 
 Kompton::Node::Node(QGraphicsItem* parent)
-	: QGraphicsItem(parent)
-	, m_ellipse(new QGraphicsEllipseItem(-10, -10, 20, 20, this))
+	: QGraphicsEllipseItem(-10, -10, 20, 20, parent)
 {
 	setAcceptHoverEvents(true);
 	QPen pen = QPen();
 	pen.setWidth(2);
 	pen.setColor(Qt::black);
-	m_ellipse->setPen(pen);
+	setPen(pen);
 }
 
 Kompton::Node::~Node(){
-	delete m_ellipse;
-}
-
-void Kompton::Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-	Q_UNUSED(painter)
-	Q_UNUSED(option)
-	Q_UNUSED(widget)
-}
-
-QRectF Kompton::Node::boundingRect() const {
-	return QRectF(m_ellipse->boundingRect());
+	qDeleteAll(m_neighbours);
 }
 
 void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-	Q_UNUSED(event)
-	emit nodeClicked(QPointF(x(),y())); //FIXME: What does signal parameter say?
+	event->accept();
+	emit nodeClicked(this);
 }
 
-void Kompton::Node::emitClick(const QPointF& pos) {
-	emit nodeClicked(pos);
+void Kompton::Node::emitClick(Kompton::Node* node) {
+	emit nodeClicked(node);
 }
 
 void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
@@ -58,7 +50,8 @@ void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
 	QPen pen;
 	pen.setWidth(5);
 	pen.setColor(Qt::cyan);
-	m_ellipse->setPen(pen);
+	setPen(pen);
+	foreach (Kompton::Node* neighbour, m_neighbours) neighbour->setPen(pen);
 }
 
 void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
@@ -66,7 +59,8 @@ void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 	QPen pen;
 	pen.setWidth(2);
 	pen.setColor(Qt::black);
-	m_ellipse->setPen(pen);
+	setPen(pen);
+	foreach (Kompton::Node* neighbour, m_neighbours) neighbour->setPen(pen);
 }
 
 #include "node.moc"

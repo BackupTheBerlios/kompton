@@ -19,27 +19,28 @@
 #ifndef KOMPTON_NODE_H
 #define KOMPTON_NODE_H
 
-#include <QGraphicsItem>
+#include <QGraphicsEllipseItem>
 #include <QObject>
 
 namespace Kompton {
-	class Node : public QObject, public QGraphicsItem {
+	class Node : public QObject, public QGraphicsEllipseItem {
 		Q_OBJECT
 		public:
 			Node(QGraphicsItem* parent = 0);
-			~Node();
+			virtual ~Node();
 
-			virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-			virtual QRectF boundingRect() const;
 			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
 			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
-			void emitClick(const QPointF& pos);
+			void emitClick(Kompton::Node* node);
+
+			inline void addNeighbour(Node* neighbour) { m_neighbours << neighbour; };
+			
 		Q_SIGNALS:
-			void nodeClicked(const QPointF& pos);
+			void nodeClicked(Kompton::Node* node);
 
 		private:
-			QGraphicsEllipseItem* m_ellipse;
+			QList<Node* > m_neighbours;
 	};
 }
 

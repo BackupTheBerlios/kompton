@@ -16,21 +16,18 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
+#include "ownscene.h"
+#include "node.h"
+#include "polyline.h"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QPainterPath>
 #include <math.h>
 
-#include "ownscene.h"
-#include "node.h"
-#include "polyline.h"
-
-#include <kdebug.h>
-
 Kompton::OwnScene::OwnScene(QObject* parent)
 	: QGraphicsScene(parent)
 	, m_editLine(bool(false))
-	, m_startPos(QPoint(0,0))
 	, m_leftNodes(3)
 	, m_rightNodes(4)
 {
@@ -44,7 +41,7 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		node->setPos(xPos,yPos);
 		yPos += sceneRect().height() / m_leftNodes;
 		addItem(node);
-		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
+		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
 	}
 	//right nodes
 	xPos = sceneRect().right();
@@ -54,22 +51,36 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		node->setPos(xPos,yPos);
 		yPos += sceneRect().height() / m_rightNodes;
 		addItem(node);
-		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
+		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
 	}
 }
 
 Kompton::OwnScene::~OwnScene() {
 }
 
-void Kompton::OwnScene::nodeEmitClick(const QPointF pos) {
+void Kompton::OwnScene::nodeEmitClick(Kompton::Node* node) {
 	if (m_editLine == true) {
 		m_editLine = false;
-		Kompton::PolyLine* line = new Kompton::PolyLine(m_startPos, pos);
+		Kompton::PolyLine* line = new Kompton::PolyLine(m_startNode->pos(), node->pos());
 		addItem(line);
+		node->addNeighbour(m_startNode);
+		m_startNode->addNeighbour(node);
 	}
 	else {
 		m_editLine = true;
-		m_startPos = pos;
+		m_startNode = node;
+	}
+}
+
+void Kompton::OwnScene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+	QGraphicsScene::mousePressEvent(event);
+	if (event->isAccepted()) return;
+	if (event->button() ==Qt::LeftButton) {
+		Kompton::Node* node = new Kompton::Node;
+		QPointF clickPos = event->scenePos();
+		node->setPos(clickPos.x(), clickPos.y());
+		addItem(node);
+		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
 	}
 }
 

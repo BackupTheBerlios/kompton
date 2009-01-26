@@ -53,8 +53,8 @@ void Kompton::PolyLine::particleEmitClick(Kompton::Particle* particle) {
 	QPointF centerPos = rect.center();
 	node->setPos(centerPos);
 	m_nodeList << node;
-	connect(node, SIGNAL(nodeClicked(QPointF)), scene(), SLOT(nodeEmitClick(QPointF)));
-	node->emitClick(centerPos);
+	connect(node, SIGNAL(nodeClicked(Kompton::Node*)), scene(), SLOT(nodeEmitClick(Kompton::Node*)));
+	node->emitClick(node);
 	//split the particle
 	QLineF line(particle->line());
 	particle->setLine(line.p1(), centerPos);
