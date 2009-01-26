@@ -107,7 +107,7 @@ void Kompton::Particle::rebuildRepresentation() {
 		static const qreal amplitude = 10.0; //maximum wave elongation
 		static const qreal wavelength = 20.0;
 		//parameters for this wave
-		const qreal waveCount = sqrt(diff.x() * diff.x() + diff.y() * diff.y()) / wavelength;
+		const qreal waveCount = floor(sqrt(diff.x() * diff.x() + diff.y() * diff.y()) / wavelength);
 		const QPointF waveDiff = diff / waveCount;
 		const qreal slope = atan2(diff.y(), diff.x());
 		const QPointF waveElongationVector(amplitude * -sin(slope), amplitude * cos(slope));
