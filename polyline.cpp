@@ -46,20 +46,21 @@ QRectF Kompton::PolyLine::boundingRect() const {
 	return QRectF();
 }
 
-void Kompton::PolyLine::particleEmitClick(Kompton::Particle* part) {
+void Kompton::PolyLine::particleEmitClick(Kompton::Particle* particle) {
 	//create a new node at correct position
 	Kompton::Node* node = new Kompton::Node(this);
-	QRectF rect = part->sceneBoundingRect();
+	QRectF rect = particle->sceneBoundingRect();
 	QPointF centerPos = rect.center();
 	node->setPos(centerPos);
 	m_nodeList << node;
 	connect(node, SIGNAL(nodeClicked(QPointF)), scene(), SLOT(nodeEmitClick(QPointF)));
 	node->emitClick(centerPos);
 	//split the particle
-	QLineF line(part->line());
-	part->setLine(line.p1(), centerPos);
+	QLineF line(particle->line());
+	particle->setLine(line.p1(), centerPos);
 	Kompton::Particle* newParticle = new Kompton::Particle(centerPos, line.p2(), this);
-	m_lineList.insert(m_lineList.indexOf(part) + 1, newParticle);
+	newParticle->setStyle(particle->style());
+	m_lineList.insert(m_lineList.indexOf(particle) + 1, newParticle);
 	connect(newParticle, SIGNAL(particleClicked(Kompton::Particle*)), this, SLOT(particleEmitClick(Kompton::Particle*)));
 }
 

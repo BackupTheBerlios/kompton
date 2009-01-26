@@ -35,6 +35,7 @@ namespace Kompton {
 			virtual ~Particle();
 
 			QLineF line() const;
+			Kompton::ParticleStyle style() const;
 			void setLine(const QPointF& start, const QPointF& end);
 			void setLine(const QLineF& line);
 			void setStyle(Kompton::ParticleStyle style);

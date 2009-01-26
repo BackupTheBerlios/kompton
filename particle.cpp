@@ -84,6 +84,10 @@ void Kompton::Particle::setLine(const QPointF& start, const QPointF& end) {
 	rebuildRepresentation();
 }
 
+Kompton::ParticleStyle Kompton::Particle::style() const {
+	return m_style;
+}
+
 void Kompton::Particle::setStyle(Kompton::ParticleStyle style) {
 	m_style = style;
 	rebuildRepresentation();
