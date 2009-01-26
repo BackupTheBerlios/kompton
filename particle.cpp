@@ -101,7 +101,7 @@ void Kompton::Particle::rebuildRepresentation() {
 		const QPointF diff = m_line.p2() - start;
 		//some constants of the representation
 		static const qreal amplitude = 10.0; //maximum wave elongation
-		static const qreal wavelength = 10.0;
+		static const qreal wavelength = 20.0;
 		//parameters for this wave
 		const qreal waveCount = sqrt(diff.x() * diff.x() + diff.y() * diff.y()) / wavelength;
 		const QPointF waveDiff = diff / waveCount;
