@@ -56,26 +56,6 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
 	}
-	//test for phonon line style
-	const QPointF start(100.0, 200.0);
-	const QPointF end(500.0, 400.0);
-	//calculate characteristic values
-	const QPointF diff = end - start;
-	static const qreal amplitude = 10.0; //maximum wave elongation
-	static const qreal wavelength = 10.0;
-	const qreal waveCount = sqrt(diff.x() * diff.x() + diff.y() * diff.y()) / wavelength;
-	const QPointF waveDiff = diff / waveCount;
-	const qreal slope = atan2(diff.y(), diff.x());
-	const QPointF waveElongationVector(amplitude * -sin(slope), amplitude * cos(slope));
-	//create path
-	QPainterPath path;
-	path.moveTo(start);
-	for (qreal i = 0.0; i < waveCount; ++i) {
-		path.quadTo(start + waveDiff * (i + 0.25) + waveElongationVector, start + waveDiff * (i + 0.5));
-		path.quadTo(start + waveDiff * (i + 0.75) - waveElongationVector, start + waveDiff * (i + 1.0));
-	}
-	//add Path for testing
-	addPath(path);
 }
 
 Kompton::OwnScene::~OwnScene() {
