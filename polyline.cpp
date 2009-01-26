@@ -52,7 +52,20 @@ void Kompton::PolyLine::particleEmitClick(Kompton::Particle* particle) {
 	QRectF rect = particle->sceneBoundingRect();
 	QPointF centerPos = rect.center();
 	node->setPos(centerPos);
-	m_nodeList << node;
+	//right position of node in list
+	int leftNodeIndex = m_lineList.indexOf(particle);
+	Kompton::Node* leftNode = m_nodeList.value(leftNodeIndex);
+	int rightNodeIndex = m_lineList.indexOf(particle) + 1;
+	Kompton::Node* rightNode = m_nodeList.value(rightNodeIndex);
+	m_nodeList.insert(rightNodeIndex + 1, rightNode);
+	m_nodeList.insert(rightNodeIndex, node);
+	//change neighbours
+	leftNode->removeNeighbour(rightNode);
+	rightNode->removeNeighbour(leftNode);
+	leftNode->addNeighbour(node);
+	rightNode->addNeighbour(node);
+	node->addNeighbour(leftNode);
+	node->addNeighbour(rightNode);
 	connect(node, SIGNAL(nodeClicked(Kompton::Node*)), scene(), SLOT(nodeEmitClick(Kompton::Node*)));
 	node->emitClick(node);
 	//split the particle
@@ -62,6 +75,11 @@ void Kompton::PolyLine::particleEmitClick(Kompton::Particle* particle) {
 	newParticle->setStyle(particle->style());
 	m_lineList.insert(m_lineList.indexOf(particle) + 1, newParticle);
 	connect(newParticle, SIGNAL(particleClicked(Kompton::Particle*)), this, SLOT(particleEmitClick(Kompton::Particle*)));
+}
+
+void Kompton::PolyLine::addStartEndNodes(Node* startNode, Node* endNode) {
+	m_nodeList << startNode;
+	m_nodeList << endNode;
 }
 
 #include "polyline.moc"

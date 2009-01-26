@@ -65,6 +65,7 @@ void Kompton::OwnScene::nodeEmitClick(Kompton::Node* node) {
 		addItem(line);
 		node->addNeighbour(m_startNode);
 		m_startNode->addNeighbour(node);
+		line->addStartEndNodes(m_startNode, node);
 	}
 	else {
 		m_editLine = true;
