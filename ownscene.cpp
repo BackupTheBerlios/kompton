@@ -56,39 +56,23 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(QPointF)), this, SLOT(nodeEmitClick(QPointF)));
 	}
-	//test phonen line style
-	QPointF start(100.0,200.0);
-	QPointF end(500.0,400.0);
-	//creat Path
+	//test for phonon line style
+	const QPointF start(100.0, 200.0);
+	const QPointF end(500.0, 400.0);
+	//calculate characteristic values
+	const QPointF diff = end - start;
+	static const qreal amplitude = 10.0; //maximum wave elongation
+	static const qreal wavelength = 10.0;
+	const qreal waveCount = sqrt(diff.x() * diff.x() + diff.y() * diff.y()) / wavelength;
+	const QPointF waveDiff = diff / waveCount;
+	const qreal slope = atan2(diff.y(), diff.x());
+	const QPointF waveElongationVector(amplitude * -sin(slope), amplitude * cos(slope));
+	//create path
 	QPainterPath path;
 	path.moveTo(start);
-	qreal startX = start.x();
-	qreal startY = start.y();
-	//calculate characteristic values
-	qreal xDiff = end.x() - startX;
-	qreal yDiff = end.y() - startY;
-	qreal amplitude = 10.0; //"height" of the wave
-	qreal stepSize = 10.0; //smaler value means better fineness
-	qreal steps = sqrt(xDiff*xDiff + yDiff*yDiff) / stepSize;
-	qreal xStepDiff = xDiff / steps;
-	qreal yStepDiff = yDiff / steps;
-	qreal arc = atan(yDiff / xDiff);
-	//draw the line
-	for (qreal i = 0.0; i < steps; ++i) {
-		path.quadTo (
-		 startX + xStepDiff*i+xStepDiff/4 - amplitude * sin(arc),
-		 startY + yStepDiff*i+yStepDiff/4 + amplitude * cos(arc),
-		 startX + xStepDiff*i+xStepDiff/2,
-		 startY + yStepDiff*i+yStepDiff/2
-		);
-// 		if (i < steps -1) {
-			path.quadTo (
-			 startX + xStepDiff*i+xStepDiff*3/4 + amplitude * sin(arc),
-			 startY + yStepDiff*i+yStepDiff*3/4 - amplitude * cos(arc),
-			 startX + xStepDiff*(i+1),
-			 startY + yStepDiff*(i+1)
-			);
-// 		}
+	for (qreal i = 0.0; i < waveCount; ++i) {
+		path.quadTo(start + waveDiff * (i + 0.25) + waveElongationVector, start + waveDiff * (i + 0.5));
+		path.quadTo(start + waveDiff * (i + 0.75) - waveElongationVector, start + waveDiff * (i + 1.0));
 	}
 	//add Path for testing
 	addPath(path);
