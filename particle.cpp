@@ -18,6 +18,7 @@
 
 #include "particle.h"
 
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 #include <QLineF>
 #include <QPen>
@@ -39,8 +40,19 @@ Kompton::Particle::~Particle() {
 }
 
 void Kompton::Particle::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-	Q_UNUSED(event)
-	emit particleClicked(this);
+	if (event->button() == Qt::LeftButton)
+		emit particleClicked(this);
+	else if (event->button() == Qt::RightButton) {
+		//DEBUG code to change between particle styles
+		switch (m_style) {
+			case Kompton::PlainStyle:
+				setStyle(Kompton::WigglyStyle);
+				break;
+			case Kompton::WigglyStyle:
+				setStyle(Kompton::PlainStyle);
+				break;
+		}
+	}
 }
 
 void Kompton::Particle::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
