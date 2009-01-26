@@ -24,12 +24,12 @@
 #include <QPointF>
 #include <QList>
 
-#include "particle.h"
-
 class QLineF;
-class Node;
 
 namespace Kompton {
+	class Node;
+	class Particle;
+
 	class PolyLine : public QObject, public QGraphicsItem {
 		Q_OBJECT
 		public:

@@ -16,10 +16,8 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ***************************************************************************/  
 
-#include <QPainter>
-
 #include "node.h"
-#include <kdebug.h>
+#include <QPen>
 
 Kompton::Node::Node(QGraphicsItem* parent)
 	: QGraphicsItem(parent)
@@ -37,6 +35,9 @@ Kompton::Node::~Node(){
 }
 
 void Kompton::Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+	Q_UNUSED(painter)
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
 }
 
 QRectF Kompton::Node::boundingRect() const {
@@ -44,22 +45,25 @@ QRectF Kompton::Node::boundingRect() const {
 }
 
 void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-	emit nodeClicked(QPointF(x(),y()));
+	Q_UNUSED(event)
+	emit nodeClicked(QPointF(x(),y())); //FIXME: What does signal parameter say?
 }
 
-void Kompton::Node::emitClick(const QPointF pos) {
+void Kompton::Node::emitClick(const QPointF& pos) {
 	emit nodeClicked(pos);
 }
 
 void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
+	Q_UNUSED(event)
+	QPen pen;
 	pen.setWidth(5);
 	pen.setColor(Qt::cyan);
 	m_ellipse->setPen(pen);
 }
 
 void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-	QPen pen = QPen();
+	Q_UNUSED(event)
+	QPen pen;
 	pen.setWidth(2);
 	pen.setColor(Qt::black);
 	m_ellipse->setPen(pen);

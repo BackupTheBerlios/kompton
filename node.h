@@ -34,9 +34,9 @@ namespace Kompton {
 			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
 			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
-			void emitClick(const QPointF pos);
+			void emitClick(const QPointF& pos);
 		Q_SIGNALS:
-			void nodeClicked(const QPointF pos);
+			void nodeClicked(const QPointF& pos);
 
 		private:
 			QGraphicsEllipseItem* m_ellipse;

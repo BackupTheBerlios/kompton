@@ -19,25 +19,36 @@
 #ifndef KOMPTON_PARTICLE_H
 #define KOMPTON_PARTICLE_H
 
-#include <QGraphicsLineItem>
+#include <QGraphicsPathItem>
 #include <QObject>
 
 namespace Kompton {
-	class Particle : public QObject, public QGraphicsLineItem {
+	enum ParticleStyle { //names taken from the manual of the LaTeX package feynmf
+		PlainStyle,
+		WigglyStyle
+	};
+
+	class Particle : public QObject, public QGraphicsPathItem {
 		Q_OBJECT
 		public:
 			Particle(const QPointF& start, const QPointF& end, QGraphicsItem* parent = 0);
 			virtual ~Particle();
 
-			void newPos(const QPointF& start, const QPointF& end);
-			
+			QLineF line() const;
+			void setLine(const QPointF& start, const QPointF& end);
+			void setLine(const QLineF& line);
+			void setStyle(Kompton::ParticleStyle style);
 		Q_SIGNALS:
 			void particleClicked(Kompton::Particle* particle);
 
 		protected:
+			void rebuildRepresentation();
 			virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
 			virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		private:
+			QLineF m_line;
+			Kompton::ParticleStyle m_style;
 	};
 }
 
