@@ -32,8 +32,7 @@ Kompton::Node::Node(QGraphicsItem* parent)
 	setPen(pen);
 }
 
-Kompton::Node::~Node(){
-	qDeleteAll(m_neighbours);
+Kompton::Node::~Node() {
 }
 
 void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -51,6 +50,7 @@ void Kompton::Node::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
 	pen.setWidth(5);
 	pen.setColor(Qt::cyan);
 	setPen(pen);
+	pen.setColor(Qt::red);
 	foreach (Kompton::Node* neighbour, m_neighbours) neighbour->setPen(pen);
 }
 
