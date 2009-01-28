@@ -34,8 +34,8 @@ namespace Kompton {
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 			void emitClick(Kompton::Node* node);
 
-			inline void addNeighbour(Node* neighbour) { m_neighbours << neighbour; };
-			inline void removeNeighbour(Node* neighbour) {m_neighbours.removeAll(neighbour); };
+			inline void addNeighbour(Node* neighbour) { m_neighbours << neighbour; }
+			inline void removeNeighbour(Node* neighbour) {m_neighbours.removeAll(neighbour); }
 			
 		Q_SIGNALS:
 			void nodeClicked(Kompton::Node* node);
