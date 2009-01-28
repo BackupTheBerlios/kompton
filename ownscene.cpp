@@ -42,6 +42,7 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		yPos += sceneRect().height() / m_leftNodes;
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
+		m_startNodes << node;
 	}
 	//right nodes
 	xPos = sceneRect().right();
@@ -52,6 +53,7 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 		yPos += sceneRect().height() / m_rightNodes;
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
+		m_startNodes << node;
 	}
 }
 

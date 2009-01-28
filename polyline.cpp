@@ -56,10 +56,8 @@ void Kompton::PolyLine::particleEmitClick(Kompton::Particle* particle) {
 	//right position of node in list
 	int leftNodeIndex = m_lineList.indexOf(particle);
 	Kompton::Node* leftNode = m_nodeList.value(leftNodeIndex);
-	int rightNodeIndex = m_lineList.indexOf(particle) + 1;
-	Kompton::Node* rightNode = m_nodeList.value(rightNodeIndex);
-	m_nodeList.insert(rightNodeIndex + 1, rightNode);
-	m_nodeList.insert(rightNodeIndex, node);
+	Kompton::Node* rightNode = m_nodeList.value(leftNodeIndex + 1);
+	m_nodeList.insert(leftNodeIndex + 1, node);
 	//change neighbours
 	leftNode->removeNeighbour(rightNode);
 	rightNode->removeNeighbour(leftNode);

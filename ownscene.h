@@ -42,6 +42,7 @@ namespace Kompton {
 			Node* m_startNode;
 			int m_leftNodes;
 			int m_rightNodes;
+			QList<Node* > m_startNodes;
 	};
 }
 
