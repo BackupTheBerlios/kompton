@@ -36,7 +36,8 @@ namespace Kompton {
 
 		private Q_SLOTS:
 			void nodeEmitClick(Kompton::Node* node);
-		
+			void placeNodes();
+			
 		private:
 			bool m_editLine;
 			Node* m_startNode;

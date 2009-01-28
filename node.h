@@ -36,12 +36,17 @@ namespace Kompton {
 
 			inline void addNeighbour(Node* neighbour) { m_neighbours << neighbour; }
 			inline void removeNeighbour(Node* neighbour) {m_neighbours.removeAll(neighbour); }
+			inline QList<Node*> getNeighbours() { return m_neighbours; }
+			
+			void findPosition();
+			inline void setAsStartNode() { m_isStartNode = true; }
 			
 		Q_SIGNALS:
 			void nodeClicked(Kompton::Node* node);
 
 		private:
 			QList<Node* > m_neighbours;
+			bool m_isStartNode;
 	};
 }
 

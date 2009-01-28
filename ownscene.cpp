@@ -38,6 +38,7 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 	qreal yPos = sceneRect().top() + sceneRect().height() / (2*m_leftNodes);
 	for (int i = 0; i < m_leftNodes; ++i) {
 		Kompton::Node* node = new Kompton::Node;
+		node->setAsStartNode();
 		node->setPos(xPos,yPos);
 		yPos += sceneRect().height() / m_leftNodes;
 		addItem(node);
@@ -49,6 +50,7 @@ Kompton::OwnScene::OwnScene(QObject* parent)
 	yPos = sceneRect().top() + sceneRect().height() / (2*m_rightNodes);
 	for (int i = 0; i < m_rightNodes; ++i) {
 		Kompton::Node* node = new Kompton::Node;
+		node->setAsStartNode();
 		node->setPos(xPos,yPos);
 		yPos += sceneRect().height() / m_rightNodes;
 		addItem(node);
@@ -68,6 +70,7 @@ void Kompton::OwnScene::nodeEmitClick(Kompton::Node* node) {
 		node->addNeighbour(m_startNode);
 		m_startNode->addNeighbour(node);
 		line->addStartEndNodes(m_startNode, node);
+		placeNodes();
 	}
 	else {
 		m_editLine = true;
@@ -78,12 +81,18 @@ void Kompton::OwnScene::nodeEmitClick(Kompton::Node* node) {
 void Kompton::OwnScene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 	QGraphicsScene::mousePressEvent(event);
 	if (event->isAccepted()) return;
-	if (event->button() ==Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton) {
 		Kompton::Node* node = new Kompton::Node;
 		QPointF clickPos = event->scenePos();
 		node->setPos(clickPos.x(), clickPos.y());
 		addItem(node);
 		connect(node, SIGNAL(nodeClicked(Kompton::Node*)), this, SLOT(nodeEmitClick(Kompton::Node*)));
+	}
+}
+
+void Kompton::OwnScene::placeNodes() {
+	foreach (Kompton::Node* startNode, m_startNodes) {
+		foreach (Kompton::Node* nodeToPlace, startNode->getNeighbours()) nodeToPlace->findPosition();
 	}
 }
 

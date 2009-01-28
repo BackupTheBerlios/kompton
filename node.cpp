@@ -24,6 +24,7 @@
 
 Kompton::Node::Node(QGraphicsItem* parent)
 	: QGraphicsEllipseItem(-10, -10, 20, 20, parent)
+	, m_isStartNode(false)
 {
 	setAcceptHoverEvents(true);
 	QPen pen = QPen();
@@ -61,6 +62,10 @@ void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 	pen.setColor(Qt::black);
 	setPen(pen);
 	foreach (Kompton::Node* neighbour, m_neighbours) neighbour->setPen(pen);
+}
+
+void Kompton::Node::findPosition() {
+	if (m_isStartNode == false) moveBy(20,20);
 }
 
 #include "node.moc"
