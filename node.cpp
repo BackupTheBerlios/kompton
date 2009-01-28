@@ -64,8 +64,21 @@ void Kompton::Node::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 	foreach (Kompton::Node* neighbour, m_neighbours) neighbour->setPen(pen);
 }
 
+#include <kdebug.h>
 void Kompton::Node::findPosition() {
-	if (m_isStartNode == false) moveBy(20,20);
+	if (m_isStartNode == false) {
+		int nodeOverThis = 0;
+		int nodeLeftOfThis= 0;
+		int nodeUnderThis = 0;
+		int nodeRightOfThis = 0;
+		QPointF ownPos = pos();
+		foreach (Kompton::Node* neighbour, m_neighbours) {
+			QPointF neighbourPos = neighbour->pos();
+			if (neighbourPos.x() < ownPos.x()) ++nodeLeftOfThis; else ++nodeRightOfThis;
+			if (neighbourPos.y() > ownPos.y()) ++nodeUnderThis; else ++nodeOverThis;
+		}
+		kDebug() << "Links: " << nodeLeftOfThis << " Ueber: " << nodeOverThis << " Rechts: " << nodeRightOfThis << " Unter: " << nodeUnderThis;
+	}
 }
 
 #include "node.moc"
