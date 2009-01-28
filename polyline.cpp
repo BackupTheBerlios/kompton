@@ -32,8 +32,9 @@ Kompton::PolyLine::PolyLine(const QPointF& start, const QPointF& end)
 }
 
 Kompton::PolyLine::~PolyLine() {
-	qDeleteAll(m_nodeList);
-	qDeleteAll(m_lineList);
+	//FIXME: proper deletion of polylines, nodes, and such
+// 	qDeleteAll(m_nodeList);
+// 	qDeleteAll(m_lineList);
 }
 
 void Kompton::PolyLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {

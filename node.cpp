@@ -32,7 +32,7 @@ Kompton::Node::Node(QGraphicsItem* parent)
 	setPen(pen);
 }
 
-Kompton::Node::~Node(){
+Kompton::Node::~Node() {
 }
 
 void Kompton::Node::mousePressEvent(QGraphicsSceneMouseEvent* event) {
